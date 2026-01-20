@@ -1,60 +1,69 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
+import { Category, type IFormInput } from './data';
 
-
-interface IFormInput {
-    prodName: string;
-    prodCategory: string;
-    prodDescription: string;
-    price: number;
-    buyPrice: number;
-    stock: number;
+type Props = {
+    selectedData: IFormInput
 }
 
-const ProductForm = () => {
+const ProductForm = (props: Props) => {
+    const { selectedData } = props
     const {
         register,
         handleSubmit,
+        setValue,
+        reset,
         formState: { errors },
     } = useForm<IFormInput>({
-        mode: "onBlur"
+        mode: "onBlur",
+        defaultValues: selectedData
     });
+
 
     const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
         console.log("data submit", data)
     }
+
+    useEffect(()=>{
+        reset({...selectedData})
+    },[selectedData])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='border p-4 w-full'>
             <div className='text-xl font-bold pb-4 border-b'>
                 Product Details Form
             </div>
-            <div className='py-4'>
-                <div className='flex justify-start gap-2 '>
+            <div className='py-4 flex flex-col gap-4'>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Product Name:</label>
-                    <input {...register('prodName')} placeholder="Name" />
+                    <input className='border border-gray-400 w-full p-1' {...register('prodName')} placeholder="Name" />
                 </div>
-                <div className='flex justify-start gap-2 '>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Product Category:</label>
-                    <input {...register('prodCategory')} placeholder="Product Category" />
+                    {/* <input className='border border-gray-400 w-full p-1' {...register('prodCategory')} placeholder="Product Category" /> */}
+                    <select {...register('prodCategory')} className='border border-gray-400 w-full p-1'>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Appliances">Appliances</option>
+                        <option value="KitchenWare">KitchenWare</option>
+                    </select>
                 </div>
-                <div className='flex justify-start gap-2 '>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Product Description:</label>
-                    <input {...register('prodDescription')} placeholder="Product Description" />
+                    <textarea className='border border-gray-400 w-full p-1' {...register('prodDescription')} placeholder="Product Description" />
                 </div>
-                <div className='flex justify-start gap-2 '>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Price:</label>
-                    <input {...register('price', {valueAsNumber:true})} type='number' placeholder="Price" />
+                    <input className='border border-gray-400 w-full p-1' {...register('price', { valueAsNumber: true })} type='number' placeholder="Price" />
                 </div>
-                <div className='flex justify-start gap-2 '>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Buy Price:</label>
-                    <input {...register('buyPrice', {valueAsNumber:true})} type='number' placeholder="Buy Price" />
+                    <input className='border border-gray-400 w-full p-1' {...register('buyPrice', { valueAsNumber: true })} type='number' placeholder="Buy Price" />
                 </div>
-                <div className='flex justify-start gap-2 '>
+                <div className='flex flex-col items-start gap-1 '>
                     <label>Stock:</label>
-                    <input {...register('stock', {valueAsNumber:true})} type='number' placeholder="Stock" />
+                    <input className='border border-gray-400 w-full p-1' {...register('stock', { valueAsNumber: true })} type='number' placeholder="Stock" />
                 </div>
-                <input type="submit" value="Submit" />
+                <input className='bg-black text-white p-2' type="submit" value="Add" />
             </div>
         </form>
     )
