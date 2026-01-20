@@ -5,6 +5,7 @@ type Props = {
 }
 
 const ProductCard = ({ productData }: Props) => {
+    // ??? do prop destructuring 
     return (
         <div className='rounded-md border p-4 w-48 text-sm justify-start'>
             <div className='rounded-sm bg-red-200 w-40 h-30'>

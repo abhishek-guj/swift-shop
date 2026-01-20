@@ -9,7 +9,6 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <main className='flex flex-col justify-start h-screen'>
-
         <Navbar />
         {children}
       </main>

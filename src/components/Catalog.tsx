@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ProductCard from './ProductCard'
+import ProductForm from './ProductForm'
 
 const Catalog = () => {
     // dummy data from: https://fakestoreapi.com/docs#tag/Products/operation/getAllProducts
@@ -250,11 +251,13 @@ const Catalog = () => {
         <>
             <div className='flex border-red-400 border p-4'>
                 {/* products */}
-                <div className='w-2/5 flex flex-wrap gap-4'>
+                <div className='w-2/5 flex flex-wrap h-fit place-content-center gap-8'>
                     {products.map((prod) => { return <ProductCard key={prod.id} productData={prod} /> })}
                 </div>
                 {/* form */}
-                <div className='w-2/5'>r</div>
+                <div className='w-3/5 border-l flex flex-col border border-green-500 items-center'>
+                    <ProductForm />
+                </div>
             </div>
         </>
     )
