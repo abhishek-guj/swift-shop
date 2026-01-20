@@ -5,11 +5,14 @@ type Props = {
   children: JSX.Element
 }
 
-const Layout = ({children}:Props) => {
+const Layout = ({ children }: Props) => {
   return (
     <>
-    <Navbar/>
-    {children}
+      <main className='flex flex-col justify-start h-screen'>
+
+        <Navbar />
+        {children}
+      </main>
     </>
   )
 }
