@@ -16,8 +16,8 @@ function App() {
   // sending to dashboard
   const totalProducts = productsData.reduce((a,prod)=>a=a+prod.stock,0)
   const lowStock = productsData.filter(pro=>pro.stock<10)
-  const buyTotal = productsData.reduce((a,pro)=>a=a+pro.buyPrice,0)
-  const sellTotal = productsData.reduce((a,pro)=>a=a+pro.price,0)
+  const buyTotal = productsData.reduce((a,pro)=>a=a+(pro.buyPrice*pro.stock),0)
+  const sellTotal = productsData.reduce((a,pro)=>a=a+(pro.price*pro.stock),0)
   console.log(totalProducts,lowStock)
   // sending to dashboard
 
@@ -27,7 +27,7 @@ function App() {
         <main className='flex flex-col px-4'>
           {/* <Sidebar /> */}
           <Dashboard totalProducts={totalProducts} lowStock={lowStock} sellTotal={sellTotal} buyTotal={buyTotal} />
-          <Catalog products={productsData}/>
+          <Catalog setProductsData={setProductsData} productsData={productsData}/>
         </main>
       </Layout>
     </div>

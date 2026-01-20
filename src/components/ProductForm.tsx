@@ -1,32 +1,90 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { Category, type IFormInput } from './data';
+import { v4 as uuid } from "uuid"
 
 type Props = {
-    selectedData: IFormInput
+    selectedData: IFormInput,
+    setSelectedData: Function,
+    setProductsData: Function,
+    productsData: IFormInput[]
+}
+
+const DEFAULT_FORM: IFormInput = {
+    prodName: "",
+    prodCategory: "",
+    prodDescription: "",
+    price: 0,
+    buyPrice: 0,
+    stock: 0,
 }
 
 const ProductForm = (props: Props) => {
-    const { selectedData } = props
+    const { selectedData, setSelectedData, setProductsData, productsData } = props
     const {
         register,
         handleSubmit,
-        setValue,
         reset,
         formState: { errors },
     } = useForm<IFormInput>({
         mode: "onBlur",
-        defaultValues: selectedData
+        defaultValues: DEFAULT_FORM
     });
 
+    const [update, setUpdate] = useState<Boolean>(false)
 
-    const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-        console.log("data submit", data)
+
+    // https://react.dev/learn/updating-arrays-in-state
+    const handleUpdate = (data: IFormInput) => {
+        const newData = { ...selectedData, ...data }
+        console.log("new", newData)
+        setSelectedData(newData)
+
+        const newList = productsData.map((pro) => {
+            if (pro.id == newData.id) { return newData }
+            else { return pro }
+        })
+
+        setProductsData(newList)
     }
 
-    useEffect(()=>{
-        reset({...selectedData})
-    },[selectedData])
+    const handleAdd = (data: IFormInput) => {
+        const newData = { ...data, id: uuid() }
+        console.log("new", newData)
+        setSelectedData(newData)
+        setProductsData([...productsData, newData])
+    }
+
+    const handleDelete = (id) => {
+        console.log(id)
+        const newList = productsData.filter((pro)=>pro.id!==id)
+        setProductsData(newList)
+        handleCancel()
+    }
+
+    const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
+        if (selectedData) {
+            console.log("data update", data)
+            handleUpdate(data)
+        }
+        else {
+            console.log("data addd", data)
+            handleAdd(data)
+        }
+
+        handleCancel()
+    }
+
+    const handleCancel = () => {
+        setSelectedData(() => { { } })
+        reset(DEFAULT_FORM)
+        console.log("asa")
+    }
+
+    // reseting form data when a product is clicked
+    useEffect(() => {
+        reset({ ...selectedData })
+    }, [selectedData])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='border p-4 w-full'>
@@ -63,7 +121,18 @@ const ProductForm = (props: Props) => {
                     <label>Stock:</label>
                     <input className='border border-gray-400 w-full p-1' {...register('stock', { valueAsNumber: true })} type='number' placeholder="Stock" />
                 </div>
-                <input className='bg-black text-white p-2' type="submit" value="Add" />
+                {
+                    selectedData ?
+                        <input className='bg-black text-white p-2' type="submit" value="Update" />
+                        : <input className='bg-black text-white p-2' type="submit" value="Add" />
+                }
+
+                {/* <input className='bg-black text-white p-2' type="submit" value={ selectedData? "Add" : "Update"} /> */}
+                <input className='bg-gray-500 text-black p-2' type="button" onClick={handleCancel} value='Cancel' />
+                {
+                    selectedData ?
+                        <input className='bg-red-500 text-black p-2' type="button" onClick={()=>{handleDelete(selectedData.id)}} value='Delete' />
+                        : null}
             </div>
         </form>
     )
