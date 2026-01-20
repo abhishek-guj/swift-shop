@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductCard from './ProductCard'
 import ProductForm from './ProductForm'
 import type { IFormInput } from './data'
@@ -11,7 +11,12 @@ type Props = {
 
 const Catalog = (props: Props) => {
     const { setProductsData, productsData } = props
-    const [filterList, setFilterList] = useState<IFormInput[]>(productsData)
+    const [filterList, setFilterList] = useState<IFormInput[]>([])
+
+    // if this removed instant changes are not reflected
+    // reason: productsData is different and dilterlist is different and as filterlist is used to render i added this useedffect here
+    useEffect(()=>{setFilterList(productsData)},[productsData])
+
 
     const handleProductClick = (a) => {
         console.log(a)
