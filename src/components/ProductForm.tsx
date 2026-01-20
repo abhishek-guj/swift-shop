@@ -21,14 +21,22 @@ const DEFAULT_FORM: IFormInput = {
 
 const ProductForm = (props: Props) => {
     const { selectedData, setSelectedData, setProductsData, productsData } = props
+
+    const formDefaultValue = () => {
+        const data = localStorage.getItem("prod")
+        return data ? JSON.parse(data) : DEFAULT_FORM
+    }
+
     const {
         register,
         handleSubmit,
         reset,
+        watch, // https://deepwiki.com/react-hook-form/react-hook-form/3.6-watching-form-values
         formState: { errors },
     } = useForm<IFormInput>({
         mode: "onBlur",
-        defaultValues: DEFAULT_FORM
+        // defaultValues: DEFAULT_FORM
+        defaultValues: JSON.parse(localStorage.getItem("prod"))
     });
 
     const [update, setUpdate] = useState<Boolean>(false)
@@ -57,7 +65,7 @@ const ProductForm = (props: Props) => {
 
     const handleDelete = (id) => {
         console.log(id)
-        const newList = productsData.filter((pro)=>pro.id!==id)
+        const newList = productsData.filter((pro) => pro.id !== id)
         setProductsData(newList)
         handleCancel()
     }
@@ -86,8 +94,14 @@ const ProductForm = (props: Props) => {
         reset({ ...selectedData })
     }, [selectedData])
 
+    const formValues = watch()
+    // https://deepwiki.com/react-hook-form/react-hook-form/3.6-watching-form-values
+    const handleFormChange=()=>{
+        localStorage.setItem("prod",JSON.stringify(formValues))
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='border p-4 w-full'>
+        <form onSubmit={handleSubmit(onSubmit)} onChange={handleFormChange} className='border p-4 w-full'>
             <div className='text-xl font-bold pb-4 border-b'>
                 Product Details Form
             </div>
@@ -131,7 +145,7 @@ const ProductForm = (props: Props) => {
                 <input className='bg-gray-500 text-black p-2' type="button" onClick={handleCancel} value='Cancel' />
                 {
                     selectedData ?
-                        <input className='bg-red-500 text-black p-2' type="button" onClick={()=>{handleDelete(selectedData.id)}} value='Delete' />
+                        <input className='bg-red-500 text-black p-2' type="button" onClick={() => { handleDelete(selectedData.id) }} value='Delete' />
                         : null}
             </div>
         </form>
