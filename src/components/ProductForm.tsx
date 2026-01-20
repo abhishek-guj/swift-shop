@@ -108,32 +108,40 @@ const ProductForm = (props: Props) => {
             <div className='py-4 flex flex-col gap-4'>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Product Name:</label>
-                    <input className='border border-gray-400 w-full p-1' {...register('prodName')} placeholder="Name" />
+                    {/* for validation */}
+                    {/* https://stackoverflow.com/questions/62574713/react-form-hooks-how-to-validate-select-option */}
+                    <input className='border border-gray-400 w-full p-1' {...register('prodName',{ required: "Please enter Name." })} placeholder="Name" />
+                    {errors.prodName && <p className='text-red-500'>{errors.prodName.message}</p>}
                 </div>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Product Category:</label>
                     {/* <input className='border border-gray-400 w-full p-1' {...register('prodCategory')} placeholder="Product Category" /> */}
-                    <select {...register('prodCategory')} className='border border-gray-400 w-full p-1'>
+                    <select {...register('prodCategory',{ required: "Please select category." })} className='border border-gray-400 w-full p-1'>
                         <option value="Electronics">Electronics</option>
                         <option value="Appliances">Appliances</option>
                         <option value="KitchenWare">KitchenWare</option>
                     </select>
+                    {errors.prodCategory && <p className='text-red-500'>{errors.prodCategory.message}</p>}
                 </div>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Product Description:</label>
-                    <textarea className='border border-gray-400 w-full p-1' {...register('prodDescription')} placeholder="Product Description" />
+                    <textarea className='border border-gray-400 w-full p-1' {...register('prodDescription',{ required: "Please enter Descritption." })} placeholder="Product Description" />
+                    {errors.prodDescription && <p className='text-red-500'>{errors.prodDescription.message}</p>}
                 </div>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Price:</label>
-                    <input className='border border-gray-400 w-full p-1' {...register('price', { valueAsNumber: true })} type='number' placeholder="Price" />
+                    <input className='border border-gray-400 w-full p-1' {...register('price', { valueAsNumber: true , required: "Please enter price."  })} type='number' placeholder="Price" />
+                    {errors.price && <p className='text-red-500'>{errors.price.message}</p>}
                 </div>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Buy Price:</label>
-                    <input className='border border-gray-400 w-full p-1' {...register('buyPrice', { valueAsNumber: true })} type='number' placeholder="Buy Price" />
+                    <input className='border border-gray-400 w-full p-1' {...register('buyPrice', { valueAsNumber: true, required: "Please enter price."  })} type='number' placeholder="Buy Price" />
+                    {errors.buyPrice && <p className='text-red-500'>{errors.buyPrice.message}</p>}
                 </div>
                 <div className='flex flex-col items-start gap-1 '>
                     <label>Stock:</label>
-                    <input className='border border-gray-400 w-full p-1' {...register('stock', { valueAsNumber: true })} type='number' placeholder="Stock" />
+                    <input className='border border-gray-400 w-full p-1' {...register('stock', { valueAsNumber: true , required: "Please enter price."  })} type='number' placeholder="Stock" />
+                    {errors.stock && <p className='text-red-500'>{errors.stock.message}</p>}
                 </div>
                 {
                     selectedData ?
