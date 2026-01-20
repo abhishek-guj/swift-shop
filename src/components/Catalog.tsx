@@ -23,6 +23,15 @@ const Catalog = (props: Props) => {
         setFilterList(fList)
     }
 
+    const handleFilter = (e) => {
+        if(e.target.value.toLowerCase()=="all"){
+            setFilterList(productsData)
+            return
+        }
+        const fList = productsData.filter(pro => pro.prodCategory.toLowerCase()===e.target.value.toLowerCase())
+        setFilterList(fList)
+    }
+
     const [selectedData, setSelectedData] = useState<IFormInput>()
 
     return (
@@ -33,7 +42,12 @@ const Catalog = (props: Props) => {
                 <div className='w-3/6 flex flex-col'>
                     <div className='flex pb-4'>
                         <input placeholder='Search' onChange={handleSearch} />
-                        <div>Filter</div>
+                        <select onChange={handleFilter} className='border border-gray-400 w-full p-1'>
+                            <option value="All">All</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Appliances">Appliances</option>
+                            <option value="KitchenWare">KitchenWare</option>
+                        </select>
                     </div>
                     <div className='flex flex-wrap h-fit justify-center gap-2'>
 
