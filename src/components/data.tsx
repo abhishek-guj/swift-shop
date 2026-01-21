@@ -5,8 +5,9 @@ export enum Category {
 }
 
 export interface IFormInput {
+    id?: number;
     prodName: string;
-    prodCategory: Category;
+    prodCategory: Category|"";
     prodDescription: string;
     price: number;
     buyPrice: number;
@@ -15,6 +16,7 @@ export interface IFormInput {
 
 export const DummyData: IFormInput[] = [
     {
+        id: 1101,
         prodName: "Iphone 16",
         prodCategory: Category.Electronics,
         prodDescription: "New ultra pro max camera iphone 16 100x zoom",
@@ -24,6 +26,7 @@ export const DummyData: IFormInput[] = [
     },
 
     {
+        id: 1102,
         prodName: "Iphone 15",
         prodCategory: Category.Electronics,
         prodDescription: "Ultra pro max camera iphone 15 100x zoom",
@@ -33,6 +36,7 @@ export const DummyData: IFormInput[] = [
     },
 
     {
+        id: 1103,
         prodName: "Best Lamp",
         prodCategory: Category.Appliances,
         prodDescription: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque, asperiores.",
@@ -43,6 +47,7 @@ export const DummyData: IFormInput[] = [
 
 
     {
+        id: 1104,
         prodName: "Spoons Set",
         prodCategory: Category.KitchenWare,
         prodDescription: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque, asperiores.",
